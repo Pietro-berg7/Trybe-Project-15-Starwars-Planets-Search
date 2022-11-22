@@ -10,6 +10,8 @@ export default function Table() {
 
   const [filterNa, setFilterNa] = useState('');
   const [filterNu, setFilterNu] = useState('');
+  const [column, setColumn] = useState('');
+  const [comparison, setComparison] = useState('');
 
   useEffect(() => {
     setFilterName({ name: filterNa });
@@ -23,26 +25,58 @@ export default function Table() {
 
   return (
     <main>
-      <label htmlFor="filter-name">
-        Search:
-        <input
-          data-testid="name-filter"
-          type="text"
-          name="filter-name"
-          value={ filterNa }
-          onChange={ ({ target: { value } }) => setFilterNa(value) }
-        />
-      </label>
-      <label htmlFor="filter-number">
-        Search:
-        <input
-          data-testid="number-filter"
-          type="text"
-          name="filter-number"
-          value={ filterNu }
-          onChange={ ({ target: { value } }) => setFilterNu(value) }
-        />
-      </label>
+
+      <form>
+        <label htmlFor="filter-name">
+          <input
+            data-testid="name-filter"
+            type="text"
+            name="filter-name"
+            value={ filterNa }
+            onChange={ ({ target: { value } }) => setFilterNa(value) }
+          />
+        </label>
+
+        <label htmlFor="filter-number">
+          <select
+            data-testid="column-filter"
+            name="filter-number"
+            value={ column }
+            onChange={ ({ target: { value } }) => setColumn(value) }
+          >
+            <option value="population">population</option>
+            <option value="orbital_period">orbital_period</option>
+            <option value="diameter">diameter</option>
+            <option value="rotation_period">rotation_period</option>
+            <option value="surface_water">surface_water</option>
+          </select>
+          <select
+            data-testid="comparison-filter"
+            name="filter-number"
+            value={ comparison }
+            onChange={ ({ target: { value } }) => setComparison(value) }
+          >
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
+          </select>
+          <input
+            data-testid="number-filter"
+            type="number"
+            name="filter-number"
+            value={ filterNu }
+            onChange={ ({ target: { value } }) => setFilterNu(value) }
+          />
+        </label>
+        <button
+          data-testid="button-filter"
+          type="button"
+          onClick={ () => {} }
+        >
+          Filtrar
+        </button>
+      </form>
+
       <table>
         <thead>
           <tr>
