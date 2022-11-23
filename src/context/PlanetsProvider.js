@@ -4,53 +4,33 @@ import fetchAPI from '../services/fetchAPI';
 import PlanetsContext from './PlanetsContext';
 
 export default function PlanetsProvider({ children }) {
-  const [apiData, setApiData] = useState([]);
   const [planets, setPlanets] = useState([]);
   const [filterName, setFilterName] = useState('');
-  const [filterNumber, setFilterNumber] = useState(0);
-  const [filterColumn, setFilterColumn] = useState('');
-  const [filterComparison, setFilterComparison] = useState('');
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
+  const [number, setNumber] = useState(0);
 
   useEffect(() => {
     async function getApiResult() {
       const apiResult = await fetchAPI();
       setPlanets(apiResult);
-      setApiData(apiResult);
     }
     getApiResult();
   }, []);
 
-  useEffect(() => {
-    const filteredByName = apiData
-      .filter((planet) => planet.name.toLowerCase()
-        .includes(filterName.name.toLowerCase()));
-    setPlanets(filteredByName);
-  }, [filterName, apiData, setPlanets]);
-
-  useEffect(() => {
-    if (filterComparison === 'maior que') {
-      const filteredByNumber = apiData
-        .filter((planet) => Number(planet[filterColumn]) > Number(filterNumber));
-      setPlanets(filteredByNumber);
-    }
-    if (filterComparison === 'menor que') {
-      const filteredByNumber = apiData
-        .filter((planet) => Number(planet[filterColumn]) < Number(filterNumber));
-      setPlanets(filteredByNumber);
-    }
-    if (filterComparison === 'igual a') {
-      const filteredByNumber = apiData
-        .filter((planet) => Number(planet[filterColumn]) === Number(filterNumber));
-      setPlanets(filteredByNumber);
-    }
-  }, [filterComparison, apiData, filterColumn, filterNumber, setPlanets]);
-
   const allData = {
-    planets,
     setFilterName,
-    setFilterNumber,
-    setFilterColumn,
-    setFilterComparison,
+    setPlanets,
+    setColumn,
+    setComparison,
+    setNumber,
+    planets,
+    filterName,
+    allNumberValue: [{
+      column,
+      comparison,
+      number,
+    }],
   };
 
   return (

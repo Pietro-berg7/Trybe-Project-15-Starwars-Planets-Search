@@ -1,28 +1,30 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 export default function NumberFilter() {
   const {
-    setFilterColumn,
-    setFilterComparison,
-    setFilterNumber,
+    setColumn,
+    setComparison,
+    setNumber,
+    planets,
+    setPlanets,
+    allNumberValue: [{ column, comparison, number }],
   } = useContext(PlanetsContext);
 
-  const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('maior que');
-  const [number, setNumber] = useState(0);
-
-  useEffect(() => {
-    setFilterNumber({ name: number });
-  }, [setFilterNumber, number]);
-
-  useEffect(() => {
-    setFilterColumn({ name: column });
-  }, [setFilterColumn, column]);
-
-  useEffect(() => {
-    setFilterComparison({ name: comparison });
-  }, [setFilterComparison, comparison]);
+  const handleClick = () => {
+    if (comparison === 'maior que') {
+      setPlanets(planets
+        .filter((planet) => Number(planet[column]) > Number(number)));
+    }
+    if (comparison === 'menor que') {
+      setPlanets(planets
+        .filter((planet) => Number(planet[column]) < Number(number)));
+    }
+    if (comparison === 'igual a') {
+      setPlanets(planets
+        .filter((planet) => Number(planet[column]) === Number(number)));
+    }
+  };
 
   return (
     <form>
@@ -60,11 +62,7 @@ export default function NumberFilter() {
       <button
         data-testid="button-filter"
         type="button"
-        onClick={ () => {
-          setFilterColumn(column);
-          setFilterComparison(comparison);
-          setFilterNumber(number);
-        } }
+        onClick={ handleClick }
       >
         Filtrar
       </button>
