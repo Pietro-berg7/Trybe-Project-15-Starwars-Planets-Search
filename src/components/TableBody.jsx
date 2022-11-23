@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
-export default function Table() {
+export default function TableBody() {
   const {
     planets,
     filterName,
@@ -11,8 +11,6 @@ export default function Table() {
       number,
     }],
   } = useContext(PlanetsContext);
-
-  console.log(planets[0]);
 
   const search = planets
     .filter((planet) => planet.name.toLowerCase()
@@ -34,29 +32,9 @@ export default function Table() {
         <td>{ planet.url }</td>
       </tr>
     ));
-
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Rotation Period</th>
-          <th>Orbital Period</th>
-          <th>Diameter</th>
-          <th>Climate</th>
-          <th>Gravity</th>
-          <th>Terrain</th>
-          <th>Surface Water</th>
-          <th>Population</th>
-          <th>Films</th>
-          <th>Created</th>
-          <th>Edited</th>
-          <th>URL</th>
-        </tr>
-      </thead>
-      <tbody>
-        {search}
-      </tbody>
-    </table>
+    <tbody>
+      {search}
+    </tbody>
   );
 }
