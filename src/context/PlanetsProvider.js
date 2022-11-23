@@ -45,8 +45,6 @@ export default function PlanetsProvider({ children }) {
     }
   }, [filterComparison, apiData, filterColumn, filterNumber, setPlanets]);
 
-  console.log(filterNumber);
-
   const allData = {
     planets,
     setFilterName,
