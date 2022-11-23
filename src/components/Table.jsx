@@ -5,21 +5,31 @@ export default function Table() {
   const {
     planets,
     setFilterName,
+    setFilterColumn,
+    setFilterComparison,
     setFilterNumber,
   } = useContext(PlanetsContext);
 
   const [filterNa, setFilterNa] = useState('');
-  const [filterNu, setFilterNu] = useState('');
-  const [column, setColumn] = useState('');
-  const [comparison, setComparison] = useState('');
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
+  const [number, setNumber] = useState(0);
 
   useEffect(() => {
     setFilterName({ name: filterNa });
   }, [setFilterName, filterNa]);
 
   useEffect(() => {
-    setFilterNumber({ name: filterNu });
-  }, [setFilterNumber, filterNu]);
+    setFilterNumber({ name: number });
+  }, [setFilterNumber, number]);
+
+  useEffect(() => {
+    setFilterColumn({ name: column });
+  }, [setFilterColumn, column]);
+
+  useEffect(() => {
+    setFilterComparison({ name: comparison });
+  }, [setFilterComparison, comparison]);
 
   console.log(planets);
 
@@ -61,17 +71,21 @@ export default function Table() {
             <option value="igual a">igual a</option>
           </select>
           <input
-            data-testid="number-filter"
+            data-testid="value-filter"
             type="number"
             name="filter-number"
-            value={ filterNu }
-            onChange={ ({ target: { value } }) => setFilterNu(value) }
+            value={ number }
+            onChange={ ({ target: { value } }) => setNumber(value) }
           />
         </label>
         <button
           data-testid="button-filter"
           type="button"
-          onClick={ () => {} }
+          onClick={ () => {
+            setFilterColumn(column);
+            setFilterComparison(comparison);
+            setFilterNumber(number);
+          } }
         >
           Filtrar
         </button>

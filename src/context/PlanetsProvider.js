@@ -7,7 +7,9 @@ export default function PlanetsProvider({ children }) {
   const [apiData, setApiData] = useState([]);
   const [planets, setPlanets] = useState([]);
   const [filterName, setFilterName] = useState('');
-  const [filterNumber, setFilterNumber] = useState('');
+  const [filterNumber, setFilterNumber] = useState(0);
+  const [filterColumn, setFilterColumn] = useState('');
+  const [filterComparison, setFilterComparison] = useState('');
 
   useEffect(() => {
     async function getApiResult() {
@@ -25,18 +27,32 @@ export default function PlanetsProvider({ children }) {
     setPlanets(filteredByName);
   }, [filterName, apiData, setPlanets]);
 
-  // useEffect(() => {
-  //   const filteredByNumber = apiData
-  //     .filter((planet) => planet.name.toLowerCase()
-  //       .includes(filteredByNumber.name.toLowerCase()));
-  //   setPlanets(filteredByNumber);
-  // }, [filterNumber, apiData, setPlanets]);
+  useEffect(() => {
+    if (filterComparison === 'maior que') {
+      const filteredByNumber = apiData
+        .filter((planet) => Number(planet[filterColumn]) > Number(filterNumber));
+      setPlanets(filteredByNumber);
+    }
+    if (filterComparison === 'menor que') {
+      const filteredByNumber = apiData
+        .filter((planet) => Number(planet[filterColumn]) < Number(filterNumber));
+      setPlanets(filteredByNumber);
+    }
+    if (filterComparison === 'igual a') {
+      const filteredByNumber = apiData
+        .filter((planet) => Number(planet[filterColumn]) === Number(filterNumber));
+      setPlanets(filteredByNumber);
+    }
+  }, [filterComparison, apiData, filterColumn, filterNumber, setPlanets]);
+
   console.log(filterNumber);
 
   const allData = {
     planets,
     setFilterName,
     setFilterNumber,
+    setFilterColumn,
+    setFilterComparison,
   };
 
   return (
