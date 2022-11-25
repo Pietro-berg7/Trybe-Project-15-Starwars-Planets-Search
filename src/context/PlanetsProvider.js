@@ -16,12 +16,15 @@ export default function PlanetsProvider({ children }) {
     'rotation_period',
     'surface_water',
   ]);
+  const [allFilters, setAllFilters] = useState([]);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
+
+  async function getApiResult() {
+    const apiResult = await fetchAPI();
+    setPlanets(apiResult);
+  }
 
   useEffect(() => {
-    async function getApiResult() {
-      const apiResult = await fetchAPI();
-      setPlanets(apiResult);
-    }
     getApiResult();
   }, []);
 
@@ -30,8 +33,11 @@ export default function PlanetsProvider({ children }) {
     setPlanets,
     setColumn,
     setComparison,
+    getApiResult,
     setNumber,
     setColumnOptions,
+    setAllFilters,
+    setFilteredPlanets,
     planets,
     filterName,
     allNumberValue: [{
@@ -40,6 +46,8 @@ export default function PlanetsProvider({ children }) {
       number,
     }],
     columnOptions,
+    allFilters,
+    filteredPlanets,
   };
 
   return (

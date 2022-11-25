@@ -11,6 +11,11 @@ export default function NumberFilter() {
     setComparison,
     setNumber,
     setPlanets,
+    setAllFilters,
+    setFilteredPlanets,
+    allFilters,
+    filteredPlanets,
+    getApiResult,
   } = useContext(PlanetsContext);
 
   useEffect(() => {
@@ -19,19 +24,62 @@ export default function NumberFilter() {
     setNumber(0);
   }, [setColumn, columnOptions, setComparison, setNumber]);
 
+  const deleteFilter = ({ target: { value } }) => {
+    const refreshFilters = allFilters.filter((filter) => filter.column !== value);
+    setAllFilters(refreshFilters);
+    columnOptions.unshift(value);
+    filteredPlanets.forEach((planet) => {
+      planets.unshift(planet);
+    });
+    if (allFilters.length === 1) {
+      setPlanets([]);
+      getApiResult();
+    }
+  };
+
+  const deleteAllFilter = () => {
+    setAllFilters([]);
+    setPlanets([]);
+    getApiResult();
+  };
+
   const handleClick = () => {
+    setAllFilters([
+      ...allFilters,
+      {
+        column,
+        comparison,
+        number,
+      },
+    ]);
     const options = columnOptions.filter((option) => option !== column);
     if (comparison === 'maior que') {
-      setPlanets(planets
-        .filter((planet) => Number(planet[column]) > Number(number)));
+      const filter = planets
+        .filter((planet) => Number(planet[column]) > Number(number));
+      const filter2 = planets
+        .filter((planet) => (
+          Number(planet[column]) <= Number(number)) || (planet[column] === 'unknown'
+        ));
+      setPlanets(filter);
+      setFilteredPlanets(filter2);
     }
     if (comparison === 'menor que') {
-      setPlanets(planets
-        .filter((planet) => Number(planet[column]) < Number(number)));
+      const filter = planets
+        .filter((planet) => Number(planet[column]) < Number(number));
+      const filter2 = planets
+        .filter((planet) => (
+          Number(planet[column]) >= Number(number)) || (planet[column] === 'unknown'
+        ));
+      setPlanets(filter);
+      setFilteredPlanets(filter2);
     }
     if (comparison === 'igual a') {
-      setPlanets(planets
-        .filter((planet) => Number(planet[column]) === Number(number)));
+      const filter = planets
+        .filter((planet) => Number(planet[column]) === Number(number));
+      const filter2 = planets
+        .filter((planet) => Number(planet[column]) !== Number(number));
+      setPlanets(filter);
+      setFilteredPlanets(filter2);
     }
     setColumnOptions(options);
   };
@@ -73,6 +121,30 @@ export default function NumberFilter() {
         onClick={ handleClick }
       >
         Filtrar
+      </button>
+      <section>
+        { allFilters.map((filter) => (
+          <div
+            data-testid="filter"
+            key={ filter.column }
+          >
+            <p>{`${filter.column} ${filter.comparison} ${filter.number}`}</p>
+            <button
+              type="button"
+              value={ filter.column }
+              onClick={ deleteFilter }
+            >
+              X
+            </button>
+          </div>
+        ))}
+      </section>
+      <button
+        data-testid="button-remove-filters"
+        type="button"
+        onClick={ deleteAllFilter }
+      >
+        Remover Filtros
       </button>
     </form>
   );
