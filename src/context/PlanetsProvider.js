@@ -9,6 +9,13 @@ export default function PlanetsProvider({ children }) {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [number, setNumber] = useState(0);
+  const [columnOptions, setColumnOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   useEffect(() => {
     async function getApiResult() {
@@ -24,6 +31,7 @@ export default function PlanetsProvider({ children }) {
     setColumn,
     setComparison,
     setNumber,
+    setColumnOptions,
     planets,
     filterName,
     allNumberValue: [{
@@ -31,6 +39,7 @@ export default function PlanetsProvider({ children }) {
       comparison,
       number,
     }],
+    columnOptions,
   };
 
   return (

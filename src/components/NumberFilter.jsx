@@ -1,17 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 export default function NumberFilter() {
   const {
+    allNumberValue: [{ column, comparison, number }],
+    columnOptions,
+    planets,
     setColumn,
+    setColumnOptions,
     setComparison,
     setNumber,
-    planets,
     setPlanets,
-    allNumberValue: [{ column, comparison, number }],
   } = useContext(PlanetsContext);
 
+  useEffect(() => {
+    setColumn(columnOptions[0]);
+    setComparison('maior que');
+    setNumber(0);
+  }, [setColumn, columnOptions, setComparison, setNumber]);
+
   const handleClick = () => {
+    const options = columnOptions.filter((option) => option !== column);
     if (comparison === 'maior que') {
       setPlanets(planets
         .filter((planet) => Number(planet[column]) > Number(number)));
@@ -24,6 +33,7 @@ export default function NumberFilter() {
       setPlanets(planets
         .filter((planet) => Number(planet[column]) === Number(number)));
     }
+    setColumnOptions(options);
   };
 
   return (
@@ -35,11 +45,9 @@ export default function NumberFilter() {
           value={ column }
           onChange={ ({ target: { value } }) => setColumn(value) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {columnOptions.map((option) => (
+            <option key={ option } value={ option }>{option}</option>
+          ))}
         </select>
         <select
           data-testid="comparison-filter"
