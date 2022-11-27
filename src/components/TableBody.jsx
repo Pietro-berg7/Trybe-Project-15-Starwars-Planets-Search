@@ -17,7 +17,7 @@ export default function TableBody() {
       .includes(filterName, column, comparison, number))
     .map((planet) => (
       <tr key={ planet.name }>
-        <td>{ planet.name }</td>
+        <td data-testid="name-cell">{ planet.name }</td>
         <td>{ planet.rotation_period }</td>
         <td>{ planet.orbital_period }</td>
         <td>{ planet.diameter }</td>
